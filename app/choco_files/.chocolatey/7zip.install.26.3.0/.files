@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<fileSnapshot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <files>
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\7zip.install.nupkg" checksum="56B1C6DFAD9497CCABE97F6BCF9FCF9A" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\7zip.install.nuspec" checksum="155336BB9866FD405FEEABDA8468E108" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\legal\LICENSE.txt" checksum="650BD91878930A925935C6103A4422CC" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\legal\VERIFICATION.txt" checksum="6DD92B0208A5B202875EB15604C434C0" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\tools\7zip_x32.exe" checksum="5501F89A7C46EDA0DF8489001FEAA1CB" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\tools\7zip_x64.exe" checksum="ECE29F11BCA82D84B4F06A0B73F127DC" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\tools\chocolateyInstall.ps1" checksum="87CA878D308A3397D208C614AA3236B4" />
+    <file path="C:\Programming\Projects\SISADMIN_PROGRAMM\app\choco_files\lib\7zip.install\tools\chocolateyUninstall.ps1" checksum="8B87B8550A461B64D4CFDE5EB051388D" />
+  </files>
+</fileSnapshot>

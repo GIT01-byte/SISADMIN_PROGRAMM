@@ -1,0 +1,170 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "traceback",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "traceback",
+        "description": "traceback",
+        "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "install_developer_soft",
+        "importPath": "installer",
+        "description": "installer",
+        "isExtraImport": true,
+        "detail": "installer",
+        "documentation": {}
+    },
+    {
+        "label": "install_base_soft",
+        "importPath": "installer",
+        "description": "installer",
+        "isExtraImport": true,
+        "detail": "installer",
+        "documentation": {}
+    },
+    {
+        "label": "upgrade_all_soft",
+        "importPath": "installer",
+        "description": "installer",
+        "isExtraImport": true,
+        "detail": "installer",
+        "documentation": {}
+    },
+    {
+        "label": "get_choco_path",
+        "kind": 2,
+        "importPath": "app.chocoEngine",
+        "description": "app.chocoEngine",
+        "peekOfCode": "def get_choco_path():\n    \"\"\"Определяет, где находится choco.exe (работает и в коде, и внутри собранного .exe)\"\"\"\n    try:\n        # Папка, куда PyInstaller распакует файлы во время работы\n        base_path = sys._MEIPASS\n    except AttributeError:\n        # Путь при обычном запуске скрипта main.py\n        base_path = os.path.abspath(\".\")\n    return os.path.join(base_path, \"choco_files\", \"choco.exe\")\ndef install_package_async(package_name, log_callback):",
+        "detail": "app.chocoEngine",
+        "documentation": {}
+    },
+    {
+        "label": "install_package_async",
+        "kind": 2,
+        "importPath": "app.chocoEngine",
+        "description": "app.chocoEngine",
+        "peekOfCode": "def install_package_async(package_name, log_callback):\n    \"\"\"Запуск установки в фоновом потоке, чтобы GUI не зависал\"\"\"\n    def run():\n        choco_path = get_choco_path()\n        # Важно: принудительно отключаем глобальные папки Choco,\n        # чтобы он работал локально и изолированно\n        os.environ[\"ChocolateyInstall\"] = os.path.dirname(choco_path)\n        # Формируем команду: локальный choco + установка + автосогласие\n        command = [choco_path, \"install\", package_name, \"-y\"]\n        try:",
+        "detail": "app.chocoEngine",
+        "documentation": {}
+    },
+    {
+        "label": "install_base_soft",
+        "kind": 2,
+        "importPath": "app.installer",
+        "description": "app.installer",
+        "peekOfCode": "def install_base_soft(log_widget):\n    \"\"\"Установка базового софта в фоновом потоке.\"\"\"\n    args = [\"install\", \"7zip\", \"vlc\", \"googlechrome\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-BaseSoft\",\n    ).start()\ndef install_developer_soft(log_widget):",
+        "detail": "app.installer",
+        "documentation": {}
+    },
+    {
+        "label": "install_developer_soft",
+        "kind": 2,
+        "importPath": "app.installer",
+        "description": "app.installer",
+        "peekOfCode": "def install_developer_soft(log_widget):\n    \"\"\"Установка софта разработчика в фоновом потоке.\"\"\"\n    args = [\"install\", \"git\", \"vscode\", \"python\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-DevSoft\",\n    ).start()\ndef upgrade_all_soft(log_widget):",
+        "detail": "app.installer",
+        "documentation": {}
+    },
+    {
+        "label": "upgrade_all_soft",
+        "kind": 2,
+        "importPath": "app.installer",
+        "description": "app.installer",
+        "peekOfCode": "def upgrade_all_soft(log_widget):\n    \"\"\"Обновление всех программ в фоновом потоке.\"\"\"\n    args = [\"upgrade\", \"all\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-UpgradeAll\",\n    ).start()",
+        "detail": "app.installer",
+        "documentation": {}
+    },
+    {
+        "label": "log_file_path",
+        "kind": 5,
+        "importPath": "app.installer",
+        "description": "app.installer",
+        "peekOfCode": "log_file_path = os.path.join(os.path.abspath(\".\"), \"app_debug.log\")\nlogging.basicConfig(\n    level=logging.DEBUG,\n    format=\"%(asctime)s [%(levelname)s] (%(threadName)s) %(message)s\",\n    handlers=[\n        logging.FileHandler(log_file_path, encoding=\"utf-8\", mode=\"a\"),\n        logging.StreamHandler(sys.stdout),  # Также дублируем логи в консоль для IDE\n    ],\n)\nlogging.info(\"=== Запуск нового сеанса менеджера пакетов ===\")",
+        "detail": "app.installer",
+        "documentation": {}
+    },
+    {
+        "label": "start",
+        "kind": 2,
+        "importPath": "app.main",
+        "description": "app.main",
+        "peekOfCode": "def start():\n    root = tk.Tk()\n    root.title(\"Программа для установки программ\")\n    root.geometry(\"900x355\")\n    root.eval(\"tk::PlaceWindow . center\")\n    root.resizable(True, True)\n    # Переводим окно в режим Fullscreen\n    root.attributes(\"-fullscreen\", True)\n    def close_app():\n        root.destroy()",
+        "detail": "app.main",
+        "documentation": {}
+    },
+    {
+        "label": "choco_path",
+        "kind": 5,
+        "importPath": "practice",
+        "description": "practice",
+        "peekOfCode": "choco_path = \"C:/Programming/Projects/SISADMIN_PROGRAMM/choco_files/tools/chocolateyInstall/choco.exe\"\nchoco_dir = r\"C:\\\\Programming\\\\Projects\\\\SISADMIN_PROGRAMM\\\\choco_files\"\nif not os.path.exists(choco_path):\n    error_msg = f\"Файл choco.exe отсутствует по указанному пути: {choco_path}\"\n    raise FileNotFoundError(error_msg)\nprint(\"11\")",
+        "detail": "practice",
+        "documentation": {}
+    },
+    {
+        "label": "choco_dir",
+        "kind": 5,
+        "importPath": "practice",
+        "description": "practice",
+        "peekOfCode": "choco_dir = r\"C:\\\\Programming\\\\Projects\\\\SISADMIN_PROGRAMM\\\\choco_files\"\nif not os.path.exists(choco_path):\n    error_msg = f\"Файл choco.exe отсутствует по указанному пути: {choco_path}\"\n    raise FileNotFoundError(error_msg)\nprint(\"11\")",
+        "detail": "practice",
+        "documentation": {}
+    }
+]
