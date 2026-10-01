@@ -32,7 +32,7 @@ def _get_choco_exe_path() -> str:
     """Находит точный путь к choco.exe с учетом режима запуска (EXE или разработка)"""
     try:
         # Режим сборки PyInstaller (.exe)
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS  # type: ignore
         logging.debug(f"Обнаружена сборка PyInstaller. Временный путь: {base_path}")
 
         # В скомпилированном виде ищем сразу в корне временной папки
@@ -60,7 +60,7 @@ def _get_choco_cache_path() -> str | None:
     """Находит точный путь к choco.exe с учетом режима запуска (EXE или разработка)"""
     try:
         # Режим сборки PyInstaller (.exe)
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS  # type: ignore
         logging.debug(f"Обнаружена сборка PyInstaller. Временный путь: {base_path}")
 
         # В скомпилированном виде ищем сразу в корне временной папки
@@ -188,7 +188,7 @@ def _run_choco_with_logs(
         # Строим информативный отчет об ошибке для разработчика
         detailed_error = (
             f"\n=== КРИТИЧЕСКАЯ ОШИБКА ДВИЖКА ===\n"
-            f"Тип исключения: {error_type.__name__}\n"
+            f"Тип исключения: {error_type.__name__}\n"  # type: ignore
             f"Описание ошибки: {str(e)}\n"
             f"Локация сбоя: файл {os.path.basename(__file__)}, функция '{func_name}', строка {line_number}\n"
             f"Входные аргументы при падении: {command_args}\n"
@@ -247,17 +247,19 @@ def run_choco_command(
 
 
 def clear_choco_cache(dir_path: str | None = None):
-    if dir_path:
-        dir_path_to_remove = dir_path
+    choco_cache_path = dir_path if dir_path else _get_choco_cache_path()
 
-    choco_cache_path = _get_choco_cache_path()
-
-    if choco_cache_path:
+    if not choco_cache_path or not os.path.exists(choco_cache_path):
         logging.info(
-            f"[Cache Remover] Начало удаления кэша Chocolatey по пути: {choco_cache_path}"
+            f"[Cache Remover] Очистка не требуется: путь '{choco_cache_path}' не существует."
         )
-        try:
-            shutil.rmtree(choco_cache_path)
-            logging.info("[Cache Remover] Удаление кэша завершено успешно.")
-        except Exception as e:
-            logging.error(f"[Cache Remover] Не удалось удалить кэш Chocolatey: {e}")
+        return
+
+    logging.info(
+        f"[Cache Remover] Начало удаления кэша Chocolatey по пути: {choco_cache_path}"
+    )
+    try:
+        shutil.rmtree(choco_cache_path)
+        logging.info("[Cache Remover] Удаление кэша завершено успешно.")
+    except Exception as e:
+        logging.error(f"[Cache Remover] Не удалось удалить кэш Chocolatey: {e}")

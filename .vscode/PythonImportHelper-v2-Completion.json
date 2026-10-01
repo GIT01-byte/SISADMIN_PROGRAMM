@@ -141,7 +141,7 @@
         "kind": 2,
         "importPath": "app.chocoEngine",
         "description": "app.chocoEngine",
-        "peekOfCode": "def clear_choco_cache(dir_path: str | None = None):\n    if dir_path:\n        dir_path_to_remove = dir_path\n    choco_cache_path = _get_choco_cache_path()\n    if choco_cache_path:\n        logging.info(\n            f\"[Cache Remover] Начало удаления кэша Chocolatey по пути: {choco_cache_path}\"\n        )\n        try:\n            shutil.rmtree(choco_cache_path)",
+        "peekOfCode": "def clear_choco_cache(dir_path: str | None = None):\n    choco_cache_path = dir_path if dir_path else _get_choco_cache_path()\n    if not choco_cache_path or not os.path.exists(choco_cache_path):\n        logging.info(\n            f\"[Cache Remover] Очистка не требуется: путь '{choco_cache_path}' не существует.\"\n        )\n        return\n    logging.info(\n        f\"[Cache Remover] Начало удаления кэша Chocolatey по пути: {choco_cache_path}\"\n    )",
         "detail": "app.chocoEngine",
         "documentation": {}
     },
