@@ -36,6 +36,64 @@
         "documentation": {}
     },
     {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "Label",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "ttk",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
         "label": "logging",
         "kind": 6,
         "isExtraImport": true,
@@ -54,90 +112,46 @@
         "documentation": {}
     },
     {
-        "label": "tkinter",
-        "kind": 6,
+        "label": "clear_choco_cache",
+        "importPath": "chocoEngine",
+        "description": "chocoEngine",
         "isExtraImport": true,
-        "importPath": "tkinter",
-        "description": "tkinter",
-        "detail": "tkinter",
+        "detail": "chocoEngine",
         "documentation": {}
     },
     {
-        "label": "install_developer_soft",
-        "importPath": "installer",
-        "description": "installer",
+        "label": "run_choco_command",
+        "importPath": "chocoEngine",
+        "description": "chocoEngine",
         "isExtraImport": true,
-        "detail": "installer",
+        "detail": "chocoEngine",
         "documentation": {}
     },
     {
-        "label": "install_base_soft",
-        "importPath": "installer",
-        "description": "installer",
-        "isExtraImport": true,
-        "detail": "installer",
-        "documentation": {}
-    },
-    {
-        "label": "upgrade_all_soft",
-        "importPath": "installer",
-        "description": "installer",
-        "isExtraImport": true,
-        "detail": "installer",
-        "documentation": {}
-    },
-    {
-        "label": "get_choco_path",
+        "label": "run_choco_command",
         "kind": 2,
         "importPath": "app.chocoEngine",
         "description": "app.chocoEngine",
-        "peekOfCode": "def get_choco_path():\n    \"\"\"Определяет, где находится choco.exe (работает и в коде, и внутри собранного .exe)\"\"\"\n    try:\n        # Папка, куда PyInstaller распакует файлы во время работы\n        base_path = sys._MEIPASS\n    except AttributeError:\n        # Путь при обычном запуске скрипта main.py\n        base_path = os.path.abspath(\".\")\n    return os.path.join(base_path, \"choco_files\", \"choco.exe\")\ndef install_package_async(package_name, log_callback):",
+        "peekOfCode": "def run_choco_command(\n    action: str,\n    log_widget: Label,\n    progress_bar: ttk.Progressbar,\n    packages: Optional[List[str]] = None,\n    choco_args: Optional[List[str]] = None,\n    thread_name: str = \"ChocoWorker\",\n) -> threading.Thread:\n    \"\"\"\n    Универсальный API-метод: собирает команду Chocolatey и запускает ее в изолированном фоне.",
         "detail": "app.chocoEngine",
         "documentation": {}
     },
     {
-        "label": "install_package_async",
+        "label": "clear_choco_cache",
         "kind": 2,
         "importPath": "app.chocoEngine",
         "description": "app.chocoEngine",
-        "peekOfCode": "def install_package_async(package_name, log_callback):\n    \"\"\"Запуск установки в фоновом потоке, чтобы GUI не зависал\"\"\"\n    def run():\n        choco_path = get_choco_path()\n        # Важно: принудительно отключаем глобальные папки Choco,\n        # чтобы он работал локально и изолированно\n        os.environ[\"ChocolateyInstall\"] = os.path.dirname(choco_path)\n        # Формируем команду: локальный choco + установка + автосогласие\n        command = [choco_path, \"install\", package_name, \"-y\"]\n        try:",
+        "peekOfCode": "def clear_choco_cache(dir_path: str | None = None):\n    if dir_path:\n        dir_path_to_remove = dir_path\n    choco_cache_path = _get_choco_cache_path()\n    if choco_cache_path:\n        logging.info(\n            f\"[Cache Remover] Начало удаления кэша Chocolatey по пути: {choco_cache_path}\"\n        )\n        try:\n            shutil.rmtree(choco_cache_path)",
         "detail": "app.chocoEngine",
-        "documentation": {}
-    },
-    {
-        "label": "install_base_soft",
-        "kind": 2,
-        "importPath": "app.installer",
-        "description": "app.installer",
-        "peekOfCode": "def install_base_soft(log_widget):\n    \"\"\"Установка базового софта в фоновом потоке.\"\"\"\n    args = [\"install\", \"7zip\", \"vlc\", \"googlechrome\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-BaseSoft\",\n    ).start()\ndef install_developer_soft(log_widget):",
-        "detail": "app.installer",
-        "documentation": {}
-    },
-    {
-        "label": "install_developer_soft",
-        "kind": 2,
-        "importPath": "app.installer",
-        "description": "app.installer",
-        "peekOfCode": "def install_developer_soft(log_widget):\n    \"\"\"Установка софта разработчика в фоновом потоке.\"\"\"\n    args = [\"install\", \"git\", \"vscode\", \"python\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-DevSoft\",\n    ).start()\ndef upgrade_all_soft(log_widget):",
-        "detail": "app.installer",
-        "documentation": {}
-    },
-    {
-        "label": "upgrade_all_soft",
-        "kind": 2,
-        "importPath": "app.installer",
-        "description": "app.installer",
-        "peekOfCode": "def upgrade_all_soft(log_widget):\n    \"\"\"Обновление всех программ в фоновом потоке.\"\"\"\n    args = [\"upgrade\", \"all\", \"-y\"]\n    threading.Thread(\n        target=_run_choco_with_logs,\n        args=(args, log_widget),\n        daemon=True,\n        name=\"Thread-UpgradeAll\",\n    ).start()",
-        "detail": "app.installer",
         "documentation": {}
     },
     {
         "label": "log_file_path",
         "kind": 5,
-        "importPath": "app.installer",
-        "description": "app.installer",
-        "peekOfCode": "log_file_path = os.path.join(os.path.abspath(\".\"), \"app_debug.log\")\nlogging.basicConfig(\n    level=logging.DEBUG,\n    format=\"%(asctime)s [%(levelname)s] (%(threadName)s) %(message)s\",\n    handlers=[\n        logging.FileHandler(log_file_path, encoding=\"utf-8\", mode=\"a\"),\n        logging.StreamHandler(sys.stdout),  # Также дублируем логи в консоль для IDE\n    ],\n)\nlogging.info(\"=== Запуск нового сеанса менеджера пакетов ===\")",
-        "detail": "app.installer",
+        "importPath": "app.chocoEngine",
+        "description": "app.chocoEngine",
+        "peekOfCode": "log_file_path = os.path.join(os.path.abspath(\".\"), \"app_debug.log\")\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s [%(levelname)s] (%(threadName)s) %(message)s\",\n    handlers=[\n        logging.FileHandler(log_file_path, encoding=\"utf-8\", mode=\"a\"),\n        logging.StreamHandler(sys.stdout),  # Также дублируем логи в консоль для IDE\n    ],\n)\nlogging.info(\"=== Запуск нового сеанса менеджера пакетов ===\")",
+        "detail": "app.chocoEngine",
         "documentation": {}
     },
     {
@@ -145,7 +159,7 @@
         "kind": 2,
         "importPath": "app.main",
         "description": "app.main",
-        "peekOfCode": "def start():\n    root = tk.Tk()\n    root.title(\"Программа для установки программ\")\n    root.geometry(\"900x355\")\n    root.eval(\"tk::PlaceWindow . center\")\n    root.resizable(True, True)\n    # Переводим окно в режим Fullscreen\n    root.attributes(\"-fullscreen\", True)\n    def close_app():\n        root.destroy()",
+        "peekOfCode": "def start():\n    clear_choco_cache()  # Очищаем кеш Choco\n    root = tk.Tk()\n    root.title(\"Программа для установки программ\")\n    root.geometry(\"900x355\")\n    root.eval(\"tk::PlaceWindow . center\")\n    root.resizable(True, True)\n    # Переводим окно в режим Fullscreen\n    root.attributes(\"-fullscreen\", True)\n    def close_app():",
         "detail": "app.main",
         "documentation": {}
     },

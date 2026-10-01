@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+practice.py
+
+
+# Some Project files
+.vscode/
+practice.py
